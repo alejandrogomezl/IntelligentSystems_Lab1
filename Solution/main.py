@@ -17,7 +17,8 @@ goal_state = json_reader.final
 problem = Problem(initial=initial_state, goal=goal_state, graph=graph)
 
 # Ejecutar el algoritmo de búsqueda
-path = Search(problem)
+search_instance = Search(problem)
+path = search_instance.bfs()
 
 # Mostrar el resultado
 if path:
