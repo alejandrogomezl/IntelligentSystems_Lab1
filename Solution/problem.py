@@ -1,22 +1,18 @@
-from state import State
-from action import Action
-
 class Problem:
-    def __init__(self, initial, goal, graph):
-        self.initial = State(initial)
-        self.goal = State(goal)
-        self.graph = graph
+    def __init__(self, initial, goal, intersections, segments):
+        self.initial = initial
+        self.goal = goal
+        self.intersections = intersections
+        self.segments = segments
 
     def actions(self, state):
-        neighbors = self.graph[state.name]
-        return [Action(state.name, neighbor) for neighbor in neighbors]
+        return state.neighbors
 
-    def result(self, state, action):
-        return State(action.destination)
-
+    def result(self, satate, action):
+        return action.destination
+    
     def goal_test(self, state):
-        is_goal = state == self.goal
-        return is_goal
+        return state == self.goal
 
-    def step_cost(self, state, action):
-        return 1
+    def step_cost(self, state_cost, action_cost):
+        return state_cost + action_cost()
