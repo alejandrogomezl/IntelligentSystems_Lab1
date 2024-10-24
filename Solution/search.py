@@ -123,3 +123,36 @@ class Search:
                     nodes_generated += 1
 
         return None
+    
+    def best_first(self):
+        start_time = time.perf_counter()
+        frontier = []
+        start_node = Node(self.problem.get_initial_state())
+        h_cost = self.heuristic(start_node.state, self.problem.goal_state)
+        heapq.heappush(frontier, (h_cost, start_node))
+        explored = set()
+        nodes_generated = 1
+        nodes_explored = 0
+
+        while frontier:
+            _, node = heapq.heappop(frontier)
+            nodes_explored += 1
+
+            if self.problem.is_goal(node.state):
+                execution_time = time.perf_counter() - start_time
+                solution_path = node.path()
+                print(f'Nodos generados: {nodes_generated}')
+                print(f'Nodos expandidos: {nodes_explored}')
+                print(f'Profundidad de la solución: {node.depth}')
+                print(f'Costo de la solución: {node.cost}')
+                print(f'Tiempo de ejecución: {execution_time*1000000000:.6f} nanoSegundos')
+                return solution_path
+
+            explored.add(node.state)
+
+            for child, action in node.state.neighbors:
+                if child not in explored:
+                    child = Node(child, node, action, node.cost + action.cost())
+                    h_cost = self.heuristic(child.state, self.problem.goal_state)
+                    heapq.heappush(frontier, (h_cost, child))
+                    nodes_generated += 1
