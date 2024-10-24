@@ -1,8 +1,4 @@
-# Importamos las clases desde los archivos correspondientes
 from readJSON import loadJSON as ReadJson
-from state import State
-from node import Node
-from problem import Problem
 from search import Search
 
 class Main:
@@ -12,10 +8,7 @@ class Main:
     def run(self):
         # 1. Leer el archivo JSON y obtener el grafo
         problem = ReadJson(self.json_file)
-        
-        # 3. Crear una instancia de Problem
-        
-
+       
         # 4. Crear una instancia de Search y ejecutar BFS
         search = Search(problem)
         solution_node = search.bfs()
