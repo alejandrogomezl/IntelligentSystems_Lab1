@@ -40,3 +40,38 @@ class Search:
                     nodes_generated += 1
 
         return None  # Si no se encuentra una solución
+
+    def dfs(self):  
+        start_time = time.perf_counter()
+        frontier = [Node(self.problem.get_initial_state())]  # Usamos una lista como pila (LIFO)
+        explored = set()
+        nodes_generated = 1
+        nodes_explored = 0
+        
+        while frontier:
+            # Extraer el nodo de la frontera (pila LIFO)
+            node = frontier.pop()    
+            nodes_explored += 1        
+
+            # Verificar si es el objetivo
+            if self.problem.is_goal(node.state):
+                execution_time = time.perf_counter() - start_time
+                solution_path = node.path()
+                print(f'Nodos generados: {nodes_generated}')
+                print(f'Nodos expandidos: {nodes_explored}')
+                print(f'Profundidad de la solución: {node.depth}')
+                print(f'Costo de la solución: {node.cost}')
+                print(f'Tiempo de ejecución: {execution_time*1000000000:.6f} nanoSegundos')
+                return solution_path
+
+            # Marcar como explorado
+            explored.add(node.state)
+
+            # Expandir los nodos hijos
+            for child, action in node.state.neighbors:
+                if child not in explored and all(front_node.state != child for front_node in frontier):
+                    child = Node(child, node, action, node.cost + action.cost())
+                    frontier.append(child)  # Agregar a la pila (LIFO)
+                    nodes_generated += 1
+
+        return None

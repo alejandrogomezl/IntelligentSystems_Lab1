@@ -11,7 +11,7 @@ class Main:
        
         # 4. Crear una instancia de Search y ejecutar BFS
         search = Search(problem)
-        solution_node = search.bfs()
+        solution_node = search.dfs()
 
         # 5. Imprimir los resultados
         if solution_node:
