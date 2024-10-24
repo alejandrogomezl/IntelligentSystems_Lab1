@@ -11,7 +11,7 @@ class Main:
        
         # 4. Crear una instancia de Search y ejecutar BFS
         search = Search(problem)
-        solution_node = search.dfs()
+        solution_node = search.a_star()
 
         # 5. Imprimir los resultados
         if solution_node:
@@ -22,7 +22,5 @@ class Main:
 # Ejecutar el programa
 if __name__ == "__main__":
     # Instancia de la clase Main con el archivo JSON
-    main_program = Main("./problems/small/calle_del_virrey_morcillo_albacete_250_3.json")
-    
-    # Ejecutar el método run para probar el programa
-    main_program.run()
+    Main("./problems/small/calle_del_virrey_morcillo_albacete_250_3.json").run()
+    #Main("./problems/huge/calle_agustina_aroca_albacete_5000_0.json").run()
