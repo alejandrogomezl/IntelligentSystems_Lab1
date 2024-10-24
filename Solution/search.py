@@ -47,13 +47,13 @@ class Search:
 
     def dfs(self):  
         start_time = time.perf_counter()
-        frontier = [Node(self.problem.get_initial_state())]  # Usamos una lista como pila (LIFO)
+        frontier = [Node(self.problem.get_initial_state())]
         explored = set()
         nodes_generated = 1
         nodes_explored = 0
         
         while frontier:
-            # Extraer el nodo de la frontera (pila LIFO)
+            # Extraer el nodo de la frontera
             node = frontier.pop()    
             nodes_explored += 1        
 
@@ -65,7 +65,7 @@ class Search:
                 print(f'Nodos expandidos: {nodes_explored}')
                 print(f'Profundidad de la solución: {node.depth}')
                 print(f'Costo de la solución: {node.cost}')
-                print(f'Tiempo de ejecución: {execution_time*1000000000:.6f} nanoSegundos')
+                print(f'Tiempo de ejecución: {execution_time*1000000000:.6f} nanoSeconds')
                 return solution_path
 
             # Marcar como explorado
@@ -73,13 +73,15 @@ class Search:
 
             # Expandir los nodos hijos
             for child, action in node.state.neighbors:
-                if child not in explored and all(front_node.state != child for front_node in frontier):
+                if child not in explored and child not in frontier:
                     child = Node(child, node, action, node.cost + action.cost())
-                    frontier.append(child)  # Agregar a la pila (LIFO)
+                    frontier.append(child)
                     nodes_generated += 1
 
-        return None
+        return None  # Si no se encuentra una solución
+
     
+
     def heuristic(self, state, goal):
         x = state.latitude - goal.latitude
         y = state.longitude - goal.longitude
