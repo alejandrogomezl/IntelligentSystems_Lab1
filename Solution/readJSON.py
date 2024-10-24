@@ -1,19 +1,21 @@
 import json
 from state import State
 from action import Action
+from problem import Problem
 
-def JsonReader(file_path):
+
+def loadJSON(file_path):
     with open(file_path, "r") as f:
         data = json.load(f)
 
     intersections = {}
     for i_data in data["intersections"]:
         inter = State(
-            id=i_data["identifier"],
+            identifier=i_data["identifier"],
             latitude=i_data["latitude"],
             longitude=i_data["longitude"],
         )
-        intersections[inter.id] = inter
+        intersections[inter.identifier] = inter
 
     segments = []
     for seg_data in data["segments"]:
@@ -29,10 +31,11 @@ def JsonReader(file_path):
         # Add neighbors to the origin state
         origin.neighbors.append((destination, segment))
 
+    # Pre-sort neighbors for each state
     for state in intersections.values():
-        state.neighbors.sort(key=lambda x: x[0].id, reverse=True)
+        state.neighbors.sort(key=lambda x: x[0].identifier, reverse=False)
 
     initial_state = intersections[data["initial"]]
     goal_state = intersections[data["final"]]
 
-    return initial_state, goal_state, intersections, segments
+    return Problem(initial_state, goal_state, intersections, segments)

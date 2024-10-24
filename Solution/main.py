@@ -1,13 +1,35 @@
-from readJSON import JsonReader
-from search import Search
+# Importamos las clases desde los archivos correspondientes
+from readJSON import loadJSON as ReadJson
+from state import State
+from node import Node
 from problem import Problem
-from graph import GraphVisualizer
+from search import Search
 
-#file = "./problems/small/calle_agustina_aroca_albacete_250_0.json"
-file = "./problems/small/calle_del_virrey_morcillo_albacete_250_3.json"
+class Main:
+    def __init__(self, json_file):
+        self.json_file = json_file
 
+    def run(self):
+        # 1. Leer el archivo JSON y obtener el grafo
+        problem = ReadJson(self.json_file)
+        
+        # 3. Crear una instancia de Problem
+        
 
-initial_state, goal_state, intersections, segments = JsonReader(file)
-problem = Problem(initial_state, goal_state, intersections, segments)
+        # 4. Crear una instancia de Search y ejecutar BFS
+        search = Search(problem)
+        solution_node = search.bfs()
 
-path = Search.bfs(problem)
+        # 5. Imprimir los resultados
+        if solution_node:
+            print("Camino encontrado:", solution_node)
+        else:
+            print("No se encontró solución")
+
+# Ejecutar el programa
+if __name__ == "__main__":
+    # Instancia de la clase Main con el archivo JSON
+    main_program = Main("./problems/small/calle_del_virrey_morcillo_albacete_250_3.json")
+    
+    # Ejecutar el método run para probar el programa
+    main_program.run()
