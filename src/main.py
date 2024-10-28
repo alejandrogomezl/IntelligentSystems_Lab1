@@ -25,7 +25,12 @@ class Main:
         
 
         if solution_node:
-            print("Camino encontrado:", solution_node)
+            print("Nodos generados:", solution_node[1])
+            print("Nodos expandidos:", solution_node[2])
+            print("Profundidad de la solución:", solution_node[3])
+            print("Costo de la solución:", solution_node[4])
+            print(f'Tiempo de ejecución: {solution_node[5]*1000000000:.6f} nanoSeconds')
+            print("Camino encontrado:", solution_node[0])
         else:
             print("No se encontró solución")
 
