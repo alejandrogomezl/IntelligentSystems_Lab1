@@ -41,10 +41,10 @@ def loadJSON(file_path):
 
     for state in intersections.values():
         # Sort by id
-        # state.neighbors.sort(key=lambda x: x[0].identifier, reverse=False)
+        state.neighbors.sort(key=lambda x: x[0].identifier, reverse=False)
 
         # Sort by heuristic
-        state.neighbors.sort(key=lambda x: heuristic(x[0], goal_state), reverse=False)
+        #state.neighbors.sort(key=lambda x: heuristic(x[0], goal_state), reverse=False)
 
         #Sort by distance
         #state.neighbors.sort(key=lambda x: x[0].distance, reverse=False)

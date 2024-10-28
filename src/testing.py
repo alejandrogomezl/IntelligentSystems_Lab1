@@ -6,8 +6,8 @@ import time
 
 files = []
 
-for t in reversed(os.listdir("./solutions")):
-#for t in ["huge"]:
+#for t in reversed(os.listdir("./solutions")):
+for t in ["huge"]:
     for p in os.listdir("./solutions/"+t):
         route = f"./problems/{t}/{p}.json"
         files.append(route)
