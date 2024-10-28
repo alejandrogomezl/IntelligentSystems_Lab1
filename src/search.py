@@ -3,9 +3,6 @@ import heapq
 from node import Node
 import time
 
-
-
-
 class Search:
     def __init__(self, problem):
         self.problem = problem

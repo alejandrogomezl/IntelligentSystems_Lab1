@@ -1,43 +1,31 @@
-import networkx as nx
 import matplotlib.pyplot as plt
+import networkx as nx
 
 class GraphVisualizer:
-    def __init__(self, graph, positions, initial, goal):
-        self.graph = graph  # Grafo representado como un diccionario
-        self.positions = positions  # Diccionario con posiciones de los nodos
-        self.initial = initial  # Nodo inicial
-        self.goal = goal  # Nodo objetivo
-        self.nx_graph = nx.Graph()  # Grafo de NetworkX
+    def __init__(self, intersections, segments, solution_path):
+        self.intersections = intersections
+        self.segments = segments
+        self.solution_path = solution_path
+        self.graph = nx.Graph()
+        
+        self._create_graph()
 
-        # Añadimos las aristas al grafo de NetworkX
-        for node, neighbors in graph.items():
-            for neighbor in neighbors:
-                self.nx_graph.add_edge(node, neighbor)
+    def _create_graph(self):
+        for state_id, state in self.intersections.items():
+            self.graph.add_node(state_id, pos=(state.longitude, state.latitude))
+        
+        for segment in self.segments:
+            self.graph.add_edge(segment.origin.identifier, segment.destination.identifier, weight=segment.distance)
 
-    def draw_graph(self, path=None):
+    def show_graph(self):
+        pos = nx.get_node_attributes(self.graph, 'pos')
+        
         plt.figure(figsize=(10, 10))
+        nx.draw(self.graph, pos, node_size=50, node_color="skyblue", font_size=10, with_labels=True, font_weight="normal", edge_color="gray")
 
-        # Usamos las posiciones de los nodos proporcionadas
-        pos = self.positions
-
-        # Definir colores: verde para initial, rojo para final, azul para el resto
-        color_map = []
-        for node in self.nx_graph:
-            if node == self.initial:
-                color_map.append('green')  # Nodo inicial
-            elif node == self.goal:
-                color_map.append('red')  # Nodo final
-            else:
-                color_map.append('blue')  # Otros nodos
-
-        # Dibujar el grafo con colores personalizados para los nodos y las posiciones
-        nx.draw(self.nx_graph, pos, with_labels=True, node_size=50, font_size=8,
-                node_color=color_map, font_weight='light', edge_color='gray')
-
-        if path:
-            # Destacar el camino encontrado en rojo
-            path_edges = [(path[i], path[i + 1]) for i in range(len(path) - 1)]
-            nx.draw_networkx_edges(self.nx_graph, pos, edgelist=path_edges, edge_color='r', width=2)
-
-        plt.title("Grafo con Camino Resaltado")
+        if self.solution_path:
+            solution_edges = [(self.solution_path[i], self.solution_path[i+1]) for i in range(len(self.solution_path) - 1)]
+            nx.draw_networkx_edges(self.graph, pos, edgelist=solution_edges, edge_color="red", width=2.5)
+        
+        plt.title("Grafo de Intersecciones y Camino de Solución")
         plt.show()
