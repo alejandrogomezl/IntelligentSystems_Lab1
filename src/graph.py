@@ -10,7 +10,7 @@ class GraphVisualizer:
         
         self._create_graph()
 
-    def _create_graph(self):
+    def create_graph(self):
         for state_id, state in self.intersections.items():
             self.graph.add_node(state_id, pos=(state.longitude, state.latitude))
         

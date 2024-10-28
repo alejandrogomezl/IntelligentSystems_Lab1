@@ -30,10 +30,21 @@ def loadJSON(file_path):
         segments.append(segment)
         origin.neighbors.append((destination, segment))
 
-    for state in intersections.values():
-        state.neighbors.sort(key=lambda x: x[0].identifier, reverse=False)
-
     initial_state = intersections[data["initial"]]
     goal_state = intersections[data["final"]]
 
+
+
+    def heuristic(self, state, goal):
+        x = state.latitude - goal.latitude
+        y = state.longitude - goal.longitude
+        return (x**2 + y**2)**0.5
+
+    for state in intersections.values():
+        # state.neighbors.sort(key=lambda x: x[0].identifier, reverse=False)
+        #Probar usar euristica para ordenar los nodos
+        state.neighbors.sort(key=lambda x: heuristic(x[0], goal_state), reverse=False)
+
+
     return Problem(initial_state, goal_state, intersections, segments)
+

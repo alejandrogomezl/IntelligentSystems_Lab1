@@ -42,4 +42,4 @@ class Main:
 
 # Ejecutar el programa
 if __name__ == "__main__":
-    Main("./problems/small/calle_agustina_aroca_albacete_250_0.json", "breadth").run()
+    Main("./problems/huge/calle_agustina_aroca_albacete_5000_0.json", "depth").run()

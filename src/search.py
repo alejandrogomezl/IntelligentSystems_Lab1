@@ -7,24 +7,28 @@ class Search:
     def __init__(self, problem):
         self.problem = problem
 
-    def bfs(self):  
+    #Breath First Search
+    def bfs(self):
         start_time = time.perf_counter()
-        frontier = deque([Node(self.problem.get_initial_state())])
-        explored = set()
+        frontier = deque([Node(self.problem.get_initial_state())])  # Queue for nodes in frontier (First In Firs Out)
+        explored = set()    # Set of explored states
         nodes_generated = 1
         nodes_explored = 0
         
         while frontier:
-            node = frontier.popleft()    
+            node = frontier.popleft()    # Remove the first node from the queue
             nodes_explored += 1        
 
+            # Check if the current node is the goal
             if self.problem.is_goal(node.state):
                 execution_time = time.perf_counter() - start_time
                 return [node.path(), nodes_generated, nodes_explored, node.depth, node.cost, execution_time]
 
-            explored.add(node.state)
+            explored.add(node.state)    # Mark the state as explored
 
+            # Expand children of the current node
             for child, action in node.state.neighbors:
+                # Add child nodes if they are not explored or in the frontier
                 if child not in explored and child not in frontier:
                     child = Node(child, node, action, node.cost + action.cost())
                     frontier.append(child)
@@ -32,24 +36,26 @@ class Search:
 
         return None
 
+    #Depth First Search
     def dfs(self):  
         start_time = time.perf_counter()
-        frontier = [Node(self.problem.get_initial_state())]
+        frontier = [Node(self.problem.get_initial_state())] # Stack for nodes in frontier (Last In First Out)
         explored = set()
         nodes_generated = 1
         nodes_explored = 0
         
         while frontier:
-            node = frontier.pop()    
+            node = frontier.pop()    # Remove the last node from the stack (Last In First Out)
             nodes_explored += 1        
 
+            # Check if the current node is the goal
             if self.problem.is_goal(node.state):
                 execution_time = time.perf_counter() - start_time
                 return [node.path(), nodes_generated, nodes_explored, node.depth, node.cost, execution_time]
 
-            explored.add(node.state)
+            explored.add(node.state)    # Mark the state as explored
 
-            # Expandir los nodos hijos
+            # Expand children of the current node
             for child, action in node.state.neighbors:
                 if child not in explored and child not in frontier:
                     child = Node(child, node, action, node.cost + action.cost())
@@ -61,34 +67,40 @@ class Search:
     
 
     def heuristic(self, state, goal):
+        # Calculates the Euclidean distance between the current state and the goal state.
         x = state.latitude - goal.latitude
         y = state.longitude - goal.longitude
         return (x**2 + y**2)**0.5
 
+    # A* Search
     def a_star(self):
         start_time = time.perf_counter()
 
+        # Initialize the frontier with the start node and its f(n) = g(n) + h(n)
         frontier = []
         start = Node(self.problem.get_initial_state())
         f = self.heuristic(start.state, self.problem.goal_state)
         heapq.heappush(frontier, (f, start))
         explored = set()
-        frontier_state_cost = {self.problem.initial_state: 0}
+        frontier_state_cost = {self.problem.initial_state: 0}   # Lowest cost to each statewha
         nodes_generated = 1
         nodes_explored = 0
 
         while frontier:
-            _, node = heapq.heappop(frontier)
+            _, node = heapq.heappop(frontier)   # Remove the node with the lowest f(n)
             nodes_explored += 1
 
+            # Check if the current node is the goal
             if self.problem.is_goal(node.state):
                 execution_time = time.perf_counter() - start_time
                 return [node.path(), nodes_generated, nodes_explored, node.depth, node.cost, execution_time]
 
-            explored.add(node.state)
+            explored.add(node.state)    # Mark the state as explored
 
+            # Expand children
             for child, action in node.state.neighbors:
-                new_cost = node.cost + action.cost()
+                new_cost = node.cost + action.cost()    # Calculate new g(n) cost
+                # Add to frontier if it's a shorter path to the child
                 if child not in explored and (child not in frontier_state_cost or new_cost < frontier_state_cost[child]):
                     child_node = Node(child, node, action, new_cost)
                     f = new_cost + self.heuristic(child, self.problem.goal_state)
@@ -98,26 +110,30 @@ class Search:
 
         return None
     
+    # Greedy Best First Search
     def best_first(self):
         start_time = time.perf_counter()
+        # Initialize frontier with start node using only h(n)
         frontier = []
         start_node = Node(self.problem.get_initial_state())
         h_cost = self.heuristic(start_node.state, self.problem.goal_state)
-        heapq.heappush(frontier, (h_cost, start_node))
+        heapq.heappush(frontier, (h_cost, start_node))  
         explored = set()
         nodes_generated = 1
         nodes_explored = 0
 
         while frontier:
-            _, node = heapq.heappop(frontier)
+            _, node = heapq.heappop(frontier)   # Remove the node with the lowest h(n)
             nodes_explored += 1
 
+            # Check if the current node is the goal
             if self.problem.is_goal(node.state):
                 execution_time = time.perf_counter() - start_time
                 return [node.path(), nodes_generated, nodes_explored, node.depth, node.cost, execution_time]
 
-            explored.add(node.state)
+            explored.add(node.state)    # Mark the state as explored
 
+            # Expand children
             for child, action in node.state.neighbors:
                 if child not in explored:
                     child = Node(child, node, action, node.cost + action.cost())
