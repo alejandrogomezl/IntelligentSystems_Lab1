@@ -8,7 +8,7 @@ class GraphVisualizer:
         self.solution_path = solution_path
         self.graph = nx.Graph()
         
-        self._create_graph()
+        self.create_graph()
 
     def create_graph(self):
         for state_id, state in self.intersections.items():

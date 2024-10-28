@@ -2,6 +2,13 @@ import json
 from state import State
 from action import Action
 from problem import Problem
+from search import Search
+
+def heuristic(state, goal):
+        # Calculates the Euclidean distance between the current state and the goal state.
+        x = state.latitude - goal.latitude
+        y = state.longitude - goal.longitude
+        return (x**2 + y**2)**0.5
 
 
 def loadJSON(file_path):
@@ -33,17 +40,16 @@ def loadJSON(file_path):
     initial_state = intersections[data["initial"]]
     goal_state = intersections[data["final"]]
 
-
-
-    def heuristic(self, state, goal):
-        x = state.latitude - goal.latitude
-        y = state.longitude - goal.longitude
-        return (x**2 + y**2)**0.5
-
     for state in intersections.values():
+        # Sort by id
         # state.neighbors.sort(key=lambda x: x[0].identifier, reverse=False)
-        #Probar usar euristica para ordenar los nodos
+
+        # Sort by heuristic
         state.neighbors.sort(key=lambda x: heuristic(x[0], goal_state), reverse=False)
+
+        #Sort by distance
+        #state.neighbors.sort(key=lambda x: x[0].distance, reverse=False)
+        
 
 
     return Problem(initial_state, goal_state, intersections, segments)

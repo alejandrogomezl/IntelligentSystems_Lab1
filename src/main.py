@@ -32,8 +32,6 @@ class Main:
             print("Costo de la solución:", solution_node[4])
             print(f'Tiempo de ejecución: {solution_node[5]*1000000000:.6f} nanoSeconds')
             print("Camino encontrado:", solution_node[0])
-            print ("intersectios", problem.intersections)
-            print ("segments", problem.segments)
             graph = Graph(problem.intersections, problem.segments, solution_node[0])
             graph.show_graph()
 
