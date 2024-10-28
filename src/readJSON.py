@@ -10,7 +10,6 @@ def heuristic(state, goal):
         y = state.longitude - goal.longitude
         return (x**2 + y**2)**0.5
 
-
 def loadJSON(file_path):
     with open(file_path, "r") as f:
         data = json.load(f)
