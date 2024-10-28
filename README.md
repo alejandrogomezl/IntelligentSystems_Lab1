@@ -105,7 +105,7 @@ The main modules of the project are as follows:
 
 ### 3.1 `graph.py`
 
-- **Purpose**: Provides utilities to handle the graph structure used in the search problem. This module works with `State` and `Action` objects to construct the graph, compute distances, and manage connections between nodes.
+- **Purpose**: Provides utilities to handle the graph structure used in the search problem. This module works with `problem` and `solution_path` objects to construct the graph, compute distances, and manage connections between nodes.
 
 ## **4. Interaction Between Modules**
 
@@ -213,7 +213,7 @@ Each method prints out the number of nodes generated, expanded, the depth of the
 Defined in `graph.py`, this class provides utilities for visualizing the road network and the solution path using NetworkX and Matplotlib.
 
 - **Methods**:
-    - `draw_graph(problem, path)`: Draws the entire graph of intersections and road segments. If a solution path is provided, it highlights the path in red.
+    - `show_graph(self)`: Draws the entire graph of intersections and road segments. If a solution path is provided, it highlights the path in red.
 
 ### **5.7 JSON Loader**
 
