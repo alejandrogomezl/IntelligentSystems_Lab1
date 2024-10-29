@@ -21,15 +21,17 @@ class Main:
             solution_node = search.a_star()
         elif self.algorithm == "best":
             solution_node = search.best_first()
+        #elif todos
         else:
             print("Not valid option: ", self.algorithm)
             return
         
 
         if solution_node:
+            #Numero de explorados
             print("Generated Nodes:", solution_node[1])
             print("Expanded Nodes:", solution_node[2])
-            print("Solution Depth:", solution_node[3])
+            print("Solution Lenght:", solution_node[3])
             print("Solution Cost:", solution_node[4])
             print(f'Execution Time: {solution_node[5]*1000000000:.6f} nS')
             print("Solution Path:", solution_node[0])
@@ -42,4 +44,6 @@ class Main:
             print("No se encontró solución")
 
 if __name__ == "__main__":
-    Main("./problems/huge/calle_agustina_aroca_albacete_5000_0.json", "depth", False).run()
+    #Main("./problems/huge/calle_agustina_aroca_albacete_5000_0.json", "best", True).run()
+    Main("./problems/huge/calle_agustina_aroca_albacete_5000_0.json", "a", False).run()
+    #Main("./problems/small/calle_agustina_aroca_albacete_250_0.json", "breadth", True).run()

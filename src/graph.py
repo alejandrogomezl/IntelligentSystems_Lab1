@@ -21,7 +21,7 @@ class GraphVisualizer:
         pos = nx.get_node_attributes(self.graph, 'pos')
         
         plt.figure(figsize=(10, 10))
-        nx.draw(self.graph, pos, node_size=50, node_color="skyblue", font_size=10, with_labels=True, font_weight="normal", edge_color="gray")
+        nx.draw(self.graph, pos, node_size=5, node_color="skyblue", font_size=10, with_labels=False, font_weight="normal", edge_color="gray")
 
         if self.solution_path:
             solution_edges = [(self.solution_path[i], self.solution_path[i+1]) for i in range(len(self.solution_path) - 1)]
