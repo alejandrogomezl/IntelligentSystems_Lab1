@@ -68,9 +68,7 @@ class Search:
         return None
 
     
-
     def heuristic(self, state, goal):
-        # Calculates the Euclidean distance between the current state and the goal state.
         current = (state.latitude, state.longitude)
         dest = (goal.latitude, goal.longitude)
         dist = geopy.distance.distance(current, dest).meters
@@ -85,14 +83,16 @@ class Search:
         # Initialize the frontier with the start node and its f(n) = g(n) + h(n)
         frontier = []
         start_node = Node(self.problem.get_initial_state())
-        g_cost = 0
-        h_cost = self.heuristic(start_node.state, self.problem.goal_state)
-        f_cost = g_cost + h_cost
-        heapq.heappush(frontier, (f_cost, next(self.counter), start_node))
+        g = 0
+        h = self.heuristic(start_node.state, self.problem.goal_state)
+        f = g + h
+        heapq.heappush(frontier, (f, next(self.counter), start_node))
 
         explored = set()
         nodes_generated = 1
         nodes_explored = 0
+
+        frontier_cost = {start_node.state: f}    # Dictionary to store the f(n) cost of each node in the frontier
 
         while frontier:
             _, _, node = heapq.heappop(frontier)   # Remove the node with the lowest f(n)
@@ -108,7 +108,7 @@ class Search:
             # Expand children
             for child_state, action in node.state.neighbors:
                 # Add to frontier if it's a shorter path to the child
-                if child_state not in explored:
+                if child_state not in explored and (child_state not in frontier_cost or node.cost + action.cost() < frontier_cost[child_state]):
                     g = node.cost + action.cost()    # Calculate new g(n) cost
                     h = self.heuristic(child_state, self.problem.goal_state)    # Calculate new h(n) cost
                     f = g + h    # Calculate new f(n) cost
