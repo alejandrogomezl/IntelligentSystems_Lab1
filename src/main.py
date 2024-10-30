@@ -13,43 +13,52 @@ class Main:
         minutes = int(seconds/60)
         seconds = seconds%60
         return f'{hours}:{minutes}:{seconds}'
-
-    def run(self):
-        problem = ReadJson(self.json_file)
-        search = Search(problem)
-
-
-        if self.algorithm == "breadth":
-            solution_node = search.bfs()
-        elif self.algorithm == "depth":
-            solution_node = search.dfs()
-        elif self.algorithm == "a":
-            solution_node = search.a_star()
-        elif self.algorithm == "best":
-            solution_node = search.best_first()
-        #elif todos
-        else:
-            print("Not valid option: ", self.algorithm)
-            return
-        
-
+    
+    def if_solution(self, solution_node, problem):
         if solution_node:
-
             print("Generated Nodes:", solution_node[1])
             print("Expanded Nodes:", solution_node[2])
             print("Solution Lenght:", solution_node[3])
             print("Solution Cost:", self.time_format(solution_node[4]))
             print("Execution Time:", self.time_format(solution_node[5]))
             print("Solution Path:", solution_node[0])
-
-
-            #Print the graph
             if self.print: Graph(problem.intersections, problem.segments, solution_node[0]).show_graph()
-
+            
         else:
             print("No se encontró solución")
 
+    def run(self):
+        problem = ReadJson(self.json_file)
+        search = Search(problem)
+
+        if self.algorithm == "bfs":
+            print("Breadth First Search")
+            self.if_solution(search.bfs(), problem)
+        elif self.algorithm == "dfs":
+            print("Depth First Search")
+            self.if_solution(search.dfs(), problem)
+        elif self.algorithm == "a":
+            print("A* Search")
+            self.if_solution(search.a_star, problem)
+        elif self.algorithm == "best":
+            print("Best First Search")
+            self.if_solution(search.best_first(), problem)
+        elif self.algorithm == "all":
+            print("Breadth First Search")
+            self.if_solution(search.bfs(), problem)
+            print("\nDepth First Search")
+            self.if_solution(search.dfs(), problem)
+            print("\nA* Search")
+            self.if_solution(search.a_star(), problem)
+            print("\nBest First Search")
+            self.if_solution(search.best_first(), problem)
+            
+        else:
+            print("Invalid Algorithm")
+
+        
+
 if __name__ == "__main__":
     #Main("./problems/huge/calle_agustina_aroca_albacete_5000_0.json", "best", True).run()
-    Main("./problems/huge/calle_herreros_albacete_2000_2.json", "a", False).run()
+    Main("./problems/huge/calle_herreros_albacete_2000_2.json", "all", False).run()
     #Main("./problems/small/calle_del_virrey_morcillo_albacete_250_3.json", "a", True).run()
