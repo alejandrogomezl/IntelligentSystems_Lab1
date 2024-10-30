@@ -8,7 +8,6 @@ import itertools
 class Search:
     def __init__(self, problem):
         self.problem = problem
-        self.counter = itertools.count()
 
     #Breath First Search
     def bfs(self):
@@ -79,6 +78,7 @@ class Search:
     def a_star(self):
         # comparar por heuristica y si empata por nodo mas viejo (Usar el numero de nodo generado)
         start_time = time.perf_counter()
+        counter = itertools.count()
 
         # Initialize the frontier with the start node and its f(n) = g(n) + h(n)
         frontier = []
@@ -86,7 +86,7 @@ class Search:
         g = 0
         h = self.heuristic(start_node.state, self.problem.goal_state)
         f = g + h
-        heapq.heappush(frontier, (f, next(self.counter), start_node))
+        heapq.heappush(frontier, (f, next(counter), start_node))
 
         explored = set()
         nodes_generated = 1
@@ -114,7 +114,7 @@ class Search:
                     f = g + h    # Calculate new f(n) cost
 
                     child_node = Node(child_state, node, action, g)
-                    heapq.heappush(frontier, (f, next(self.counter), child_node))
+                    heapq.heappush(frontier, (f, next(counter), child_node))
                     nodes_generated += 1
 
         return None
@@ -122,17 +122,20 @@ class Search:
     # Greedy Best First Search
     def best_first(self):
         start_time = time.perf_counter()
+        counter = itertools.count()
         # Initialize frontier with start node using only h(n)
         frontier = []
         start_node = Node(self.problem.get_initial_state())
-        h_cost = self.heuristic(start_node.state, self.problem.goal_state)
-        heapq.heappush(frontier, (h_cost, start_node))  
+        g = 0
+        h = self.heuristic(start_node.state, self.problem.goal_state)
+        f = g + h
+        heapq.heappush(frontier, (f, next(counter), start_node))  
         explored = set()
         nodes_generated = 1
         nodes_explored = 0
 
         while frontier:
-            _, node = heapq.heappop(frontier)   # Remove the node with the lowest h(n)
+            _, _, node = heapq.heappop(frontier)   # Remove the node with the lowest h(n)
             nodes_explored += 1
 
             # Check if the current node is the goal
@@ -147,5 +150,5 @@ class Search:
                 if next not in explored:
                     child = Node(next, node, action, node.cost + action.cost())
                     h_cost = self.heuristic(child.state, self.problem.goal_state)
-                    heapq.heappush(frontier, (h_cost, child))
+                    heapq.heappush(frontier, (h_cost, next(counter), child))
                     nodes_generated += 1
