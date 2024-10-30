@@ -4,12 +4,6 @@ from action import Action
 from problem import Problem
 from search import Search
 
-def heuristic(state, goal):
-        # Calculates the Euclidean distance between the current state and the goal state.
-        x = state.latitude - goal.latitude
-        y = state.longitude - goal.longitude
-        return (x**2 + y**2)**0.5
-
 def loadJSON(file_path):
     with open(file_path, "r") as f:
         data = json.load(f)

@@ -153,7 +153,7 @@ class Search:
                 if child_state not in explored:
                     f = self.heuristic(child_state, self.problem.goal_state)    # Calculate new h(n) cost
 
-                    child_node = Node(child_state, node, action, g)
+                    child_node = Node(child_state, node, action, f)
                     heapq.heappush(frontier, (f, next(counter), child_node))
                     nodes_generated += 1
 
