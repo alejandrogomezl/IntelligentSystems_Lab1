@@ -60,5 +60,6 @@ class Main:
 
 if __name__ == "__main__":
     #Main("./problems/huge/calle_agustina_aroca_albacete_5000_0.json", "best", True).run()
-    Main("./problems/huge/calle_herreros_albacete_2000_2.json", "best", False).run()
+    #Main("./problems/huge/calle_herreros_albacete_2000_2.json", "best", False).run()
     #Main("./problems/small/calle_del_virrey_morcillo_albacete_250_3.json", "a", True).run()
+    Main("./problems/huge/paseo_simón_abril_albacete_5000_3.json", "all", False).run()
